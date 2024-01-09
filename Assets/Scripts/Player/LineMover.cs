@@ -3,10 +3,12 @@
 public class LineMover : MonoBehaviour
 {
     [SerializeField, Range(1, 5)] private int _amountOfLines = 3;
-    [SerializeField, Range(1f, 5f)] private float _step = 1.5f;
+    [SerializeField, Range(1f, 25f)] private float _step = 1.5f;
+    [SerializeField, Range(0f, 5f)] private float _transitionTime = 0.3f;
 
     private float[] _lines;
     private int _currentPosition;
+    private int _newPosition;
 
     private void Awake()
     {
@@ -20,6 +22,23 @@ public class LineMover : MonoBehaviour
         }
 
         _currentPosition = (_amountOfLines + 1) / 2 - 1;
+        _newPosition = _currentPosition;
+    }
+
+    private void Update()
+    {
+        if (_newPosition == _currentPosition)
+        {
+            return;
+        }
+
+        float x = Mathf.Lerp(transform.position.x, _lines[_newPosition], _transitionTime);
+        transform.position = new Vector3(x, transform.position.y, transform.position.z);
+
+        if (Mathf.Abs(transform.position.x - _lines[_newPosition]) < 0.01f)
+        {
+            _currentPosition = _newPosition;
+        }
     }
 
     public void TryMoveLeft()
@@ -29,8 +48,7 @@ public class LineMover : MonoBehaviour
             return;
         }
 
-        _currentPosition--;
-        transform.position = new Vector3(_lines[_currentPosition], transform.position.y, transform.position.z);
+        _newPosition = _currentPosition - 1;
     }
 
     public void TryMoveRight()
@@ -40,7 +58,6 @@ public class LineMover : MonoBehaviour
             return;
         }
 
-        _currentPosition++;
-        transform.position = new Vector3(_lines[_currentPosition], transform.position.y, transform.position.z);
+        _newPosition = _currentPosition + 1;
     }
 }

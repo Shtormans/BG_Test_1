@@ -1,45 +1,98 @@
 ﻿using System;
 using UnityEngine;
 
-public class PlayerBehaviour : MonoBehaviour
+[RequireComponent(typeof(Rigidbody))]
+public class PlayerBehaviour : MonoBehaviour, IGamePauseSubscriber
 {
     [SerializeField] private Animator _animator;
+    [SerializeField] private PauseGameManager _pauseGameManager;
+    [SerializeField] private PlayerStateMachine _stateMachine;
 
     private PlayerPhysics _physics;
     private LineMover _lineMover;
+    private PlayerColliderController _colliderController;
+    private PlayerInputter _inputter;
+    private Rigidbody _rigidbody;
 
-    private bool _canJump;
+    private bool _isJumping;
+    private bool _isSliding;
 
     public event Action StartedMoving;
+    public event Action Died;
 
     public Animator Animator => _animator;
+    public bool IsJumping => _isJumping;
+    public bool IsSliding => _isSliding;
 
     private void Awake()
     {
+        _rigidbody = GetComponent<Rigidbody>();
         _physics = GetComponent<PlayerPhysics>();
         _lineMover = GetComponent<LineMover>();
+        _colliderController = GetComponent<PlayerColliderController>();
+        _inputter = GetComponent<PlayerInputter>();
 
-        _canJump = true;
+        _isJumping = false;
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnEnable()
     {
-        if (collision.transform.TryGetComponent<Floor>(out Floor floor))
-        {
-            _canJump = true;
-        }
+        _pauseGameManager.Paused += Pause;
+        _pauseGameManager.Resumed += Resume;
+
+        _physics.enabled = false;
+        _inputter.enabled = false;
+    }
+
+    private void OnDisable()
+    {
+        _pauseGameManager.Paused -= Pause;
+        _pauseGameManager.Resumed -= Resume;
     }
 
     public void StartMoving()
     {
+        Resume();
+
         StartedMoving?.Invoke();
     }
 
     public void Jump()
     {
-        _physics.Jump();
+        if (_isJumping)
+        {
+            return;
+        }
 
-        _canJump = false;
+        _isSliding = false;
+        _isJumping = true;
+        _colliderController.Jump();
+    }
+
+    public void Slide()
+    {
+        if (_isSliding)
+        {
+            return;
+        }
+
+        _isJumping = false;
+        _isSliding = true;
+        _colliderController.Slide();
+    }
+
+    public void StopSliding()
+    {
+        _isSliding = false;
+
+        _colliderController.MakeDefault();
+    }
+
+    public void StopJumping()
+    {
+        _isJumping = false;
+
+        _colliderController.MakeDefault();
     }
 
     public void SlideToRight()
@@ -50,5 +103,36 @@ public class PlayerBehaviour : MonoBehaviour
     public void SlideToLeft()
     {
         _lineMover.TryMoveLeft();
+    }
+
+    public void Die()
+    {
+        _stateMachine.SetState<DieState>();
+        _physics.enabled = false;
+        _lineMover.enabled = false;
+        _colliderController.enabled = false;
+        _inputter.enabled = false;
+        _rigidbody.velocity = Vector3.zero;
+
+        Died?.Invoke();
+    }
+
+    public void Pause()
+    {
+        _physics.enabled = false;
+        _lineMover.enabled = false;
+        _colliderController.enabled = false;
+        _inputter.enabled = false;
+        _rigidbody.velocity = Vector3.zero;
+        _animator.enabled = false;
+    }
+
+    public void Resume()
+    {
+        _physics.enabled = true;
+        _lineMover.enabled = true;
+        _colliderController.enabled = true;
+        _inputter.enabled = true;
+        _animator.enabled = true;
     }
 }
