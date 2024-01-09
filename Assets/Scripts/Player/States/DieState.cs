@@ -9,6 +9,6 @@ public class DieState : State
 
     public override void Use()
     {
-        throw new System.NotImplementedException();
+        _animator.CrossFade(HashNameAnimator.DieState, 0.2f);
     }
 }

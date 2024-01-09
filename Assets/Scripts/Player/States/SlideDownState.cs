@@ -9,6 +9,12 @@ public class SlideDownState : State
 
     public override void Use()
     {
-        throw new System.NotImplementedException();
+        if (_playerBehaviour.IsSliding)
+        {
+            return;
+        }
+
+        _animator.CrossFade(HashNameAnimator.SlideState, 0.2f);
+        _playerBehaviour.Slide();
     }
 }
