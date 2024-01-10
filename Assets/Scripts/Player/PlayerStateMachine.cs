@@ -18,7 +18,8 @@ public class PlayerStateMachine : MonoBehaviour
             { typeof(SlideDownState), new SlideDownState(_player, _player.Animator) },
             { typeof(JumpState), new JumpState(_player, _player.Animator) },
             { typeof(RunState), new RunState(_player, _player.Animator) },
-            { typeof(DieState), new DieState(_player, _player.Animator) }
+            { typeof(DieState), new DieState(_player, _player.Animator) },
+            { typeof(ReviveState), new ReviveState(_player, _player.Animator) }
         };
     }
 

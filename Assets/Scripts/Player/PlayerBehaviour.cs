@@ -11,7 +11,7 @@ public class PlayerBehaviour : MonoBehaviour, IGamePauseSubscriber
     private PlayerPhysics _physics;
     private LineMover _lineMover;
     private PlayerColliderController _colliderController;
-    private PlayerInputter _inputter;
+    private PlayerInputManager _inputManager;
     private Rigidbody _rigidbody;
 
     private bool _isJumping;
@@ -30,7 +30,7 @@ public class PlayerBehaviour : MonoBehaviour, IGamePauseSubscriber
         _physics = GetComponent<PlayerPhysics>();
         _lineMover = GetComponent<LineMover>();
         _colliderController = GetComponent<PlayerColliderController>();
-        _inputter = GetComponent<PlayerInputter>();
+        _inputManager = GetComponent<PlayerInputManager>();
 
         _isJumping = false;
     }
@@ -39,9 +39,6 @@ public class PlayerBehaviour : MonoBehaviour, IGamePauseSubscriber
     {
         _pauseGameManager.Paused += Pause;
         _pauseGameManager.Resumed += Resume;
-
-        _physics.enabled = false;
-        _inputter.enabled = false;
     }
 
     private void OnDisable()
@@ -111,7 +108,7 @@ public class PlayerBehaviour : MonoBehaviour, IGamePauseSubscriber
         _physics.enabled = false;
         _lineMover.enabled = false;
         _colliderController.enabled = false;
-        _inputter.enabled = false;
+        _inputManager.enabled = false;
         _rigidbody.velocity = Vector3.zero;
 
         Died?.Invoke();
@@ -122,7 +119,7 @@ public class PlayerBehaviour : MonoBehaviour, IGamePauseSubscriber
         _physics.enabled = false;
         _lineMover.enabled = false;
         _colliderController.enabled = false;
-        _inputter.enabled = false;
+        _inputManager.enabled = false;
         _rigidbody.velocity = Vector3.zero;
         _animator.enabled = false;
     }
@@ -132,7 +129,12 @@ public class PlayerBehaviour : MonoBehaviour, IGamePauseSubscriber
         _physics.enabled = true;
         _lineMover.enabled = true;
         _colliderController.enabled = true;
-        _inputter.enabled = true;
+        _inputManager.enabled = true;
         _animator.enabled = true;
+    }
+
+    public void Revive()
+    {
+        _stateMachine.SetState<ReviveState>();
     }
 }

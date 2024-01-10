@@ -40,4 +40,17 @@ public class ObstaclesContainer : MonoBehaviour
             AddNewChunk();
         }
     }
+
+    public void ChangeFirstChunksToSafe(int amount)
+    {
+        int index = 0;
+
+        var chunk = _chunks.First;
+        while (_chunks.Count != index && index < amount)
+        {
+            chunk.Value.DeleteObstacles();
+            chunk = chunk.Next;
+            index++;
+        }
+    }
 }

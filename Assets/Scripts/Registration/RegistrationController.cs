@@ -9,6 +9,7 @@ public class RegistrationController : MonoBehaviour
     [SerializeField] private TMP_InputField _confirmedPassword;
 
     [SerializeField] private ErrorDisplayer _errorDisplayer;
+    [SerializeField] private FirebaseRepository _repository;
 
     public void Register()
     {
@@ -46,5 +47,7 @@ public class RegistrationController : MonoBehaviour
             Email = emailResult.Value,
             Password = passwordResult.Value
         };
+
+        _repository.RegisterUser(user);
     }
 }

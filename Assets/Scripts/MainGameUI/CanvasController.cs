@@ -23,6 +23,12 @@ public class CanvasController : MonoBehaviour
         _gameCanvas.gameObject.SetActive(true);
     }
 
+    public void Revive()
+    {
+        _gameOverCanvas.gameObject.SetActive(false);
+        _gameCanvas.gameObject.SetActive(true);
+    }
+
     public void StopGame()
     {
         _gameCanvas.gameObject.SetActive(false);
