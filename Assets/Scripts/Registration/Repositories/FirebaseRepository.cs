@@ -1,17 +1,17 @@
 using Firebase;
 using Firebase.Auth;
-using System;
 using System.Collections;
 using UnityEngine;
+
 
 public class FirebaseRepository : MonoBehaviour, IRepository
 {
     [SerializeField] private DependencyStatus _dependencyStatus;
     private FirebaseAuth _auth;
 
-    private void Awake()
+    private async void Awake()
     {
-        FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task =>
+        await FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task =>
         {
             _dependencyStatus = task.Result;
 
