@@ -82,19 +82,16 @@ public class PlayerBehaviour : MonoBehaviour, IGamePauseSubscriber
     public void StopSliding()
     {
         _isSliding = false;
-
-        _stateMachine.SetState<RunState>();
     }
 
     public void StopJumping()
     {
         _isJumping = false;
-
-        _stateMachine.SetState<RunState>();
     }
 
     public void StartRunning()
     {
+        _stateMachine.SetState<RunState>();
         _colliderController.MakeDefault();
     }
 

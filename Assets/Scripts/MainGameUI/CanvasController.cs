@@ -3,6 +3,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class CanvasController : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class CanvasController : MonoBehaviour
     [SerializeField] private Canvas _gameCanvas;
     [SerializeField] private Canvas _gameOverCanvas;
     [SerializeField] private Canvas _pauseGameCanvas;
+    [SerializeField] private Transform _leaderBoard;
 
     [SerializeField] private ScoreObserver _scoreObserver;
     [SerializeField] private PauseGameManager _pauseGameManager;
@@ -36,6 +38,16 @@ public class CanvasController : MonoBehaviour
 
         _mainMenuCanvas.gameObject.SetActive(false);
         _gameCanvas.gameObject.SetActive(true);
+    }
+
+    public void OpenLeaderboard()
+    {
+        _leaderBoard.gameObject.SetActive(true);
+    }
+
+    public void CloseLeaderboard()
+    {
+        _leaderBoard.gameObject.SetActive(false);
     }
 
     public void Revive()

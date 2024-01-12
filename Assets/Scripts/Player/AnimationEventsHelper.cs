@@ -13,4 +13,9 @@ public class AnimationEventsHelper : MonoBehaviour
     {
         _player.StopJumping();
     }
+
+    public void ReturnToRun()
+    {
+        _player.StartRunning();
+    }
 }
