@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AdsManager : MonoBehaviour
 {
-    private RewardedAd rewardedAd;
+    private RewardedAd _rewardedAd;
     private string _adUnitId;
 
     public event Action AdSuccessfullyEnded;
@@ -19,10 +19,10 @@ public class AdsManager : MonoBehaviour
 
     private void LoadRewardedAd()
     {
-        if (rewardedAd != null)
+        if (_rewardedAd != null)
         {
-            rewardedAd.Destroy();
-            rewardedAd = null;
+            _rewardedAd.Destroy();
+            _rewardedAd = null;
         }
 
         var adRequest = new AdRequest();
@@ -35,17 +35,17 @@ public class AdsManager : MonoBehaviour
                     return;
                 }
 
-                rewardedAd = ad;
-                RegisterEventHandlers(rewardedAd);
+                _rewardedAd = ad;
+                RegisterEventHandlers(_rewardedAd);
             });
     }
 
 
     public void ShowRewardedAd()
     {
-        if (rewardedAd != null && rewardedAd.CanShowAd())
+        if (_rewardedAd != null && _rewardedAd.CanShowAd())
         {
-            rewardedAd.Show((Reward reward) =>
+            _rewardedAd.Show((Reward reward) =>
             {
                 AdSuccessfullyEnded?.Invoke();
             });

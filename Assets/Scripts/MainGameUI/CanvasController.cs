@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
+using System.Collections.Generic;
 
 public class CanvasController : MonoBehaviour
 {
@@ -12,8 +13,22 @@ public class CanvasController : MonoBehaviour
 
     [SerializeField] private ScoreObserver _scoreObserver;
     [SerializeField] private PauseGameManager _pauseGameManager;
+    [SerializeField] private LeaderboardController _leaderboardController;
 
     public event Action GameStarted;
+
+    private void OnEnable()
+    {
+        FirebaseRepository.Instance.GetLeaderboard(UpdateScoreBoardCompleted);
+    }
+
+    private void UpdateScoreBoardCompleted(Result<List<UserWithScore>> usersResult)
+    {
+        if (usersResult.IsSuccess)
+        {
+            _leaderboardController.UpdateLeaderboardTable(usersResult.Value);
+        }
+    }
 
     public void StartGame()
     {
@@ -59,12 +74,12 @@ public class CanvasController : MonoBehaviour
 
     public void ExitFromAccount()
     {
-
+        FirebaseRepository.Instance.SignOut();
+        SceneController.ChangeSceneToMainMenu();
     }
 
     public void RestartGame()
     {
-        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-        SceneManager.LoadScene(currentSceneIndex);
+        SceneController.ChangeSceneToGame();
     }
 }

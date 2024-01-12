@@ -81,6 +81,7 @@ public class PlayerBehaviour : MonoBehaviour, IGamePauseSubscriber
     public void StopSliding()
     {
         _isSliding = false;
+        Debug.Log(IsSliding);
 
         _colliderController.MakeDefault();
     }

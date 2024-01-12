@@ -9,6 +9,8 @@ public class SlideDownState : State
 
     public override void Use()
     {
+        Debug.Log(_playerBehaviour.IsSliding);
+
         if (_playerBehaviour.IsSliding)
         {
             return;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 public class Password : ValueObject
 {
     public const int MaxLength = 15;
-    public const int MinLength = 3;
+    public const int MinLength = 8;
 
     private Password(string value)
     {

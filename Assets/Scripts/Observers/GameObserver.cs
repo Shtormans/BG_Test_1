@@ -4,10 +4,12 @@ public class GameObserver : MonoBehaviour
 {
     [SerializeField] private CanvasController _canvasController;
     [SerializeField] private PlayerBehaviour _playerBehaviour;
+    [SerializeField] private ScoreObserver _scoreObserver;
     [SerializeField] private PlayerStateMachine _stateMachine;
     [SerializeField] private PauseGameManager _pauseGameManager;
     [SerializeField] private WorldMonitor _worldMonitor;
-    [SerializeField] private ReviveAddController _reviveAddController;
+    [SerializeField] private ReviveAdController _reviveAddController;
+    [SerializeField] private PlayerContainer _playerContainer;
 
     private void OnEnable()
     {
@@ -32,6 +34,15 @@ public class GameObserver : MonoBehaviour
 
     public void OnGameFinished()
     {
+        int score = _scoreObserver.Score;
+        int maxScore = _playerContainer.MaxScore;
+
+        if (score > maxScore)
+        {
+            _playerContainer.SetMaxScore(score);
+            FirebaseRepository.Instance.SaveScore(score);
+        }
+
         _canvasController.StopGame();
     }
 

@@ -6,6 +6,7 @@ public class AnimationEventsHelper : MonoBehaviour
 
     public void StopSliding()
     {
+        Debug.Log("Stop Sliding");
         _player.StopSliding();
     }
 

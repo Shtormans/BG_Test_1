@@ -2,18 +2,19 @@ using UnityEngine;
 
 public class RegistrationCanvasButtonsController : MonoBehaviour
 {
-    [SerializeField] private Canvas _registrationCanvas;
-    [SerializeField] private Canvas _loginCanvas;
+    [SerializeField] private UIForm _registrationCanvas;
+    [SerializeField] private UIForm _loginCanvas;
 
     public void ChangeToLogin()
     {
-        _registrationCanvas.gameObject.SetActive(false);
-        _loginCanvas.gameObject.SetActive(true);
+        _registrationCanvas.Disable();
+        _loginCanvas.Enable();
+
     }
 
     public void ChangeToRegistration()
     {
-        _registrationCanvas.gameObject.SetActive(true);
-        _loginCanvas.gameObject.SetActive(false);
+        _loginCanvas.Disable();
+        _registrationCanvas.Enable();
     }
 }

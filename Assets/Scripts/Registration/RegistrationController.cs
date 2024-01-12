@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class RegistrationController : MonoBehaviour
 {
@@ -9,7 +10,6 @@ public class RegistrationController : MonoBehaviour
     [SerializeField] private TMP_InputField _confirmedPassword;
 
     [SerializeField] private ErrorDisplayer _errorDisplayer;
-    [SerializeField] private FirebaseRepository _repository;
 
     public void Register()
     {
@@ -48,6 +48,18 @@ public class RegistrationController : MonoBehaviour
             Password = passwordResult.Value
         };
 
-        _repository.RegisterUser(user);
+        FirebaseRepository.Instance.RegisterUser(user, RegisterFinished);
+    }
+
+    private void RegisterFinished(Result result)
+    {
+        if (result.IsFailure)
+        {
+            _errorDisplayer.DisplayError(result.Error);
+        }
+        else
+        {
+            SceneController.ChangeSceneToGame();
+        }
     }
 }
