@@ -63,6 +63,8 @@ public class ObstaclesPool : MonoBehaviour
 
     public void ReturnToPool(Floor floor)
     {
+        floor.gameObject.SetActive(false);
+
         _activeChunks.Remove(floor);
         _nonActiveChunks.Add(floor);
     }

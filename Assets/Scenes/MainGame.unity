@@ -1519,7 +1519,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bc0b8aab78159b4a8758dbc3c381a38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _startX: -1200
   _destinationX: 0
   _durationInSeconds: 0.8
 --- !u!1 &321681912
@@ -4558,7 +4557,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50fb77eacb35c20449a068bafba14b07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _startAmount: 40
+  _startAmount: 2
   _chunkStyles:
   - {fileID: -2376473758991557979, guid: aef067b18ad1a8b4f8fe983ba6d4108a, type: 3}
 --- !u!114 &1746377924

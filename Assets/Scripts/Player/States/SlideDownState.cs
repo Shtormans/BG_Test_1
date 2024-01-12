@@ -16,7 +16,7 @@ public class SlideDownState : State
             return;
         }
 
-        _animator.CrossFade(HashNameAnimator.SlideState, 0.2f);
+        _animator.CrossFade(HashNameAnimator.SlideState, 0.1f);
         _playerBehaviour.Slide();
     }
 }

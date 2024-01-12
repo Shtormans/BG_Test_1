@@ -15,7 +15,7 @@ public class JumpState : State
             return;
         }
 
-        _animator.CrossFade(HashNameAnimator.JumpState, 0.2f);
+        _animator.CrossFade(HashNameAnimator.JumpState, 0.1f);
         _playerBehaviour.Jump();
     }
 }

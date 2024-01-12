@@ -49,6 +49,7 @@ public class PlayerBehaviour : MonoBehaviour, IGamePauseSubscriber
 
     public void StartMoving()
     {
+        StartRunning();
         Resume();
 
         StartedMoving?.Invoke();
@@ -81,15 +82,19 @@ public class PlayerBehaviour : MonoBehaviour, IGamePauseSubscriber
     public void StopSliding()
     {
         _isSliding = false;
-        Debug.Log(IsSliding);
 
-        _colliderController.MakeDefault();
+        _stateMachine.SetState<RunState>();
     }
 
     public void StopJumping()
     {
         _isJumping = false;
 
+        _stateMachine.SetState<RunState>();
+    }
+
+    public void StartRunning()
+    {
         _colliderController.MakeDefault();
     }
 

@@ -28,7 +28,6 @@ public class GameObserver : MonoBehaviour
     public void OnGameStarted()
     {
         _pauseGameManager.Resume();
-        _playerBehaviour.StartMoving();
         _stateMachine.SetState<StartGameState>();
     }
 
