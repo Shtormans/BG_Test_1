@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using DG.Tweening;
+using UnityEngine;
 
 public class LineMover : MonoBehaviour
 {
@@ -32,13 +33,9 @@ public class LineMover : MonoBehaviour
             return;
         }
 
-        float x = Mathf.Lerp(transform.position.x, _lines[_newPosition], _transitionTime);
-        transform.position = new Vector3(x, transform.position.y, transform.position.z);
+        transform.DOMoveX(_lines[_newPosition], _transitionTime);
+        _currentPosition = _newPosition;
 
-        if (Mathf.Abs(transform.position.x - _lines[_newPosition]) < 0.01f)
-        {
-            _currentPosition = _newPosition;
-        }
     }
 
     public void TryMoveLeft()

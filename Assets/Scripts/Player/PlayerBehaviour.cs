@@ -55,7 +55,7 @@ public class PlayerBehaviour : MonoBehaviour, IGamePauseSubscriber
         StartedMoving?.Invoke();
     }
 
-    public void Jump()
+    public void StartJumping()
     {
         if (_isJumping)
         {
@@ -64,10 +64,14 @@ public class PlayerBehaviour : MonoBehaviour, IGamePauseSubscriber
 
         _isSliding = false;
         _isJumping = true;
+    }
+
+    public void Jump()
+    {
         _colliderController.Jump();
     }
 
-    public void Slide()
+    public void StartSliding()
     {
         if (_isSliding)
         {
@@ -76,6 +80,10 @@ public class PlayerBehaviour : MonoBehaviour, IGamePauseSubscriber
 
         _isJumping = false;
         _isSliding = true;
+    }
+
+    public void Slide()
+    {
         _colliderController.Slide();
     }
 
@@ -95,6 +103,12 @@ public class PlayerBehaviour : MonoBehaviour, IGamePauseSubscriber
         _colliderController.MakeDefault();
     }
 
+    public void ReturnToRun()
+    {
+        StopSliding();
+        StopJumping();
+    }
+
     public void SlideToRight()
     {
         _lineMover.TryMoveRight();
@@ -112,8 +126,9 @@ public class PlayerBehaviour : MonoBehaviour, IGamePauseSubscriber
         _lineMover.enabled = false;
         _colliderController.enabled = false;
         _inputManager.enabled = false;
-        _rigidbody.velocity = Vector3.zero;
 
+        _rigidbody.isKinematic = true;
+        
         Died?.Invoke();
     }
 
@@ -139,5 +154,9 @@ public class PlayerBehaviour : MonoBehaviour, IGamePauseSubscriber
     public void Revive()
     {
         _stateMachine.SetState<ReviveState>();
+        _rigidbody.isKinematic = false;
+        Resume();
+
+        StartedMoving?.Invoke();
     }
 }

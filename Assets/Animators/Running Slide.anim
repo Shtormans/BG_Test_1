@@ -81495,6 +81495,13 @@ AnimationClip:
   m_HasGenericRootTransform: 1
   m_HasMotionFloatCurves: 0
   m_Events:
+  - time: 0.13333334
+    functionName: StartSliding
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
   - time: 1.0666667
     functionName: StopSliding
     data: 
@@ -81502,7 +81509,7 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 1.5333333
+  - time: 1.4333333
     functionName: ReturnToRun
     data: 
     objectReferenceParameter: {fileID: 0}

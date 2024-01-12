@@ -10,7 +10,5 @@ public class ReviveState : State
     public override void Use()
     {
         _animator.CrossFade(HashNameAnimator.RunState, 0f);
-
-        _playerBehaviour.StartMoving();
     }
 }

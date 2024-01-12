@@ -82,7 +82,17 @@ public class FirebaseRepository : MonoBehaviour
 
     public void RegisterUser(User user, Action<Result> action = null)
     {
+        action += OnUserRegistered;
+
         StartCoroutine(Register(user, action));
+    }
+
+    private void OnUserRegistered(Result result)
+    {
+        if (result.IsSuccess)
+        {
+            SaveScore(0); 
+        }
     }
 
     public void SignOut()

@@ -5,7 +5,7 @@ using UnityEngine;
 public class AdsManager : MonoBehaviour
 {
     private RewardedAd _rewardedAd;
-    private string _adUnitId;
+    private string _adUnitId = "ca-app-pub-3940256099942544/5224354917";
 
     public event Action AdSuccessfullyEnded;
 

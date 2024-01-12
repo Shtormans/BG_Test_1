@@ -10,5 +10,7 @@ public class RunState : State
     public override void Use()
     {
         _animator.CrossFade(HashNameAnimator.RunState, 0.1f);
+
+        _playerBehaviour.ReturnToRun();
     }
 }
