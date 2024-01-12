@@ -29,5 +29,19 @@ public class LoginController : MonoBehaviour
             Email = emailResult.Value,
             Password = passwordResult.Value
         };
+
+        FirebaseRepository.Instance.LoginUser(user, LoginFinished);
+    }
+
+    private void LoginFinished(Result result)
+    {
+        if (result.IsFailure)
+        {
+            _errorDisplayer.DisplayError(result.Error);
+        }
+        else
+        {
+            SceneController.ChangeSceneToGame();
+        }
     }
 }

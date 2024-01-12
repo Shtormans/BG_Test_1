@@ -11,6 +11,6 @@ public class RunState : State
     {
         _animator.CrossFade(HashNameAnimator.RunState, 0.1f);
 
-        _playerBehaviour.StartMoving();
+        _playerBehaviour.ReturnToRun();
     }
 }

@@ -11,7 +11,7 @@ public class PlayerBehaviour : MonoBehaviour, IGamePauseSubscriber
     private PlayerPhysics _physics;
     private LineMover _lineMover;
     private PlayerColliderController _colliderController;
-    private PlayerInputter _inputter;
+    private PlayerInputManager _inputManager;
     private Rigidbody _rigidbody;
 
     private bool _isJumping;
@@ -30,7 +30,7 @@ public class PlayerBehaviour : MonoBehaviour, IGamePauseSubscriber
         _physics = GetComponent<PlayerPhysics>();
         _lineMover = GetComponent<LineMover>();
         _colliderController = GetComponent<PlayerColliderController>();
-        _inputter = GetComponent<PlayerInputter>();
+        _inputManager = GetComponent<PlayerInputManager>();
 
         _isJumping = false;
     }
@@ -39,9 +39,6 @@ public class PlayerBehaviour : MonoBehaviour, IGamePauseSubscriber
     {
         _pauseGameManager.Paused += Pause;
         _pauseGameManager.Resumed += Resume;
-
-        _physics.enabled = false;
-        _inputter.enabled = false;
     }
 
     private void OnDisable()
@@ -52,12 +49,13 @@ public class PlayerBehaviour : MonoBehaviour, IGamePauseSubscriber
 
     public void StartMoving()
     {
+        StartRunning();
         Resume();
 
         StartedMoving?.Invoke();
     }
 
-    public void Jump()
+    public void StartJumping()
     {
         if (_isJumping)
         {
@@ -66,10 +64,14 @@ public class PlayerBehaviour : MonoBehaviour, IGamePauseSubscriber
 
         _isSliding = false;
         _isJumping = true;
+    }
+
+    public void Jump()
+    {
         _colliderController.Jump();
     }
 
-    public void Slide()
+    public void StartSliding()
     {
         if (_isSliding)
         {
@@ -78,21 +80,33 @@ public class PlayerBehaviour : MonoBehaviour, IGamePauseSubscriber
 
         _isJumping = false;
         _isSliding = true;
+    }
+
+    public void Slide()
+    {
         _colliderController.Slide();
     }
 
     public void StopSliding()
     {
         _isSliding = false;
-
-        _colliderController.MakeDefault();
     }
 
     public void StopJumping()
     {
         _isJumping = false;
+    }
 
+    public void StartRunning()
+    {
+        _stateMachine.SetState<RunState>();
         _colliderController.MakeDefault();
+    }
+
+    public void ReturnToRun()
+    {
+        StopSliding();
+        StopJumping();
     }
 
     public void SlideToRight()
@@ -111,9 +125,10 @@ public class PlayerBehaviour : MonoBehaviour, IGamePauseSubscriber
         _physics.enabled = false;
         _lineMover.enabled = false;
         _colliderController.enabled = false;
-        _inputter.enabled = false;
-        _rigidbody.velocity = Vector3.zero;
+        _inputManager.enabled = false;
 
+        _rigidbody.isKinematic = true;
+        
         Died?.Invoke();
     }
 
@@ -122,7 +137,7 @@ public class PlayerBehaviour : MonoBehaviour, IGamePauseSubscriber
         _physics.enabled = false;
         _lineMover.enabled = false;
         _colliderController.enabled = false;
-        _inputter.enabled = false;
+        _inputManager.enabled = false;
         _rigidbody.velocity = Vector3.zero;
         _animator.enabled = false;
     }
@@ -132,7 +147,16 @@ public class PlayerBehaviour : MonoBehaviour, IGamePauseSubscriber
         _physics.enabled = true;
         _lineMover.enabled = true;
         _colliderController.enabled = true;
-        _inputter.enabled = true;
+        _inputManager.enabled = true;
         _animator.enabled = true;
+    }
+
+    public void Revive()
+    {
+        _stateMachine.SetState<ReviveState>();
+        _rigidbody.isKinematic = false;
+        Resume();
+
+        StartedMoving?.Invoke();
     }
 }

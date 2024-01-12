@@ -2,6 +2,8 @@ using System;
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
+using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class CanvasController : MonoBehaviour
 {
@@ -9,17 +11,48 @@ public class CanvasController : MonoBehaviour
     [SerializeField] private Canvas _gameCanvas;
     [SerializeField] private Canvas _gameOverCanvas;
     [SerializeField] private Canvas _pauseGameCanvas;
+    [SerializeField] private Transform _leaderBoard;
 
     [SerializeField] private ScoreObserver _scoreObserver;
     [SerializeField] private PauseGameManager _pauseGameManager;
+    [SerializeField] private LeaderboardController _leaderboardController;
 
     public event Action GameStarted;
+
+    private void OnEnable()
+    {
+        FirebaseRepository.Instance.GetLeaderboard(UpdateScoreBoardCompleted);
+    }
+
+    private void UpdateScoreBoardCompleted(Result<List<UserWithScore>> usersResult)
+    {
+        if (usersResult.IsSuccess)
+        {
+            _leaderboardController.UpdateLeaderboardTable(usersResult.Value);
+        }
+    }
 
     public void StartGame()
     {
         GameStarted?.Invoke();
 
         _mainMenuCanvas.gameObject.SetActive(false);
+        _gameCanvas.gameObject.SetActive(true);
+    }
+
+    public void OpenLeaderboard()
+    {
+        _leaderBoard.gameObject.SetActive(true);
+    }
+
+    public void CloseLeaderboard()
+    {
+        _leaderBoard.gameObject.SetActive(false);
+    }
+
+    public void Revive()
+    {
+        _gameOverCanvas.gameObject.SetActive(false);
         _gameCanvas.gameObject.SetActive(true);
     }
 
@@ -53,12 +86,12 @@ public class CanvasController : MonoBehaviour
 
     public void ExitFromAccount()
     {
-
+        FirebaseRepository.Instance.SignOut();
+        SceneController.ChangeSceneToMainMenu();
     }
 
     public void RestartGame()
     {
-        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-        SceneManager.LoadScene(currentSceneIndex);
+        SceneController.ChangeSceneToGame();
     }
 }

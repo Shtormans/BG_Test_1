@@ -4,7 +4,6 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerPhysics : MonoBehaviour
 {
-    [SerializeField, Range(0f, 20f)] private float _jumpForce = 5f;
     [SerializeField, Range(0f, 20f)] private float _initialSpeed = 4f;
     [SerializeField, Range(0.01f, 3f)] private float _secondsToIncreasingSpeed = 0.05f;
     [SerializeField, Range(0f, 5f)] private float _speedIncreaseValue = 0.1f;

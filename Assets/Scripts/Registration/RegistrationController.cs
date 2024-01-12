@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class RegistrationController : MonoBehaviour
 {
@@ -46,5 +47,19 @@ public class RegistrationController : MonoBehaviour
             Email = emailResult.Value,
             Password = passwordResult.Value
         };
+
+        FirebaseRepository.Instance.RegisterUser(user, RegisterFinished);
+    }
+
+    private void RegisterFinished(Result result)
+    {
+        if (result.IsFailure)
+        {
+            _errorDisplayer.DisplayError(result.Error);
+        }
+        else
+        {
+            SceneController.ChangeSceneToGame();
+        }
     }
 }

@@ -14,6 +14,8 @@ public class ScoreObserver : MonoBehaviour, IGamePauseSubscriber
     private int _score;
     private Coroutine _changeScoreCoroutine;
 
+    public int Score => _score;
+
     private void OnEnable()
     {
         _score = 0;

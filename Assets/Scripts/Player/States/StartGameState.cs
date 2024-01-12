@@ -15,5 +15,7 @@ public class StartGameState : State
         _playerBehaviour.transform.Rotate(0, 180, 0);
 
         _stateMachine.SetState<RunState>();
+
+        _playerBehaviour.StartMoving();
     }
 }

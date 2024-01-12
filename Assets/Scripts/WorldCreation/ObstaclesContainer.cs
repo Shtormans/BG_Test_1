@@ -12,8 +12,6 @@ public class ObstaclesContainer : MonoBehaviour
     private void Awake()
     {
         _chunks = new LinkedList<Floor>();
-
-        _chunks.AddFirst(_firstChunk);
     }
 
     public void AddNewChunk()
@@ -21,8 +19,16 @@ public class ObstaclesContainer : MonoBehaviour
         var chunk = _pool.GetRandom();
 
         chunk.gameObject.SetActive(true);
-        chunk.transform.position = _chunks.Last.Value.EndPoint + chunk.transform.position - chunk.StartPoint;
-        
+
+        if (_chunks.Count != 0)
+        {
+            chunk.transform.position = _chunks.Last.Value.EndPoint + chunk.transform.position - chunk.StartPoint;
+        }
+        else
+        {
+            chunk.transform.position = _firstChunk.EndPoint + chunk.transform.position - chunk.StartPoint;
+        }
+
         _chunks.AddLast(chunk);
     }
 
@@ -38,6 +44,19 @@ public class ObstaclesContainer : MonoBehaviour
             chunk = _chunks.First;
 
             AddNewChunk();
+        }
+    }
+
+    public void ChangeFirstChunksToSafe(int amount)
+    {
+        int index = 0;
+
+        var chunk = _chunks.First;
+        while (_chunks.Count != index && index < amount)
+        {
+            chunk.Value.DeleteObstacles();
+            chunk = chunk.Next;
+            index++;
         }
     }
 }
